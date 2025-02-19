@@ -3,7 +3,7 @@ const express = require("express");
 const TelegramBot = require("node-telegram-bot-api");
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 const bot = new TelegramBot("7908620487:AAF4g43C8WDQ_MPr2Eo9Dg2XYusyQbvMS6U", { polling: true });
 
 app.use(express.json());
