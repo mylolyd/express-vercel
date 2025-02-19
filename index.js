@@ -11,7 +11,7 @@ app.use(express.json());
 // Event saat bot menerima pesan
 bot.on("message", (msg) => {
     const chatId = msg.chat.id;
-    bot.sendMessage(chatId, `Halo, ${msg.from.first_name}! Anda mengirim: ${msg.text}`);
+    bot.sendMessage(chatId, `Halo, ${msg.from.first_name}! Anda mengirim: ${msg.text} dan chatid anda ${msg.chat.id}`);
 });
 
 // Endpoint untuk mengirim pesan ke chat tertentu
