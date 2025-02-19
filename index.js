@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const product = require("./api/product");
-requre("./api/bot.js");
+
 app.use(express.json({ extended: false }));
 
 app.use("/api/product", product);
