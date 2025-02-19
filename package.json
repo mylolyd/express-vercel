@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/hatuanem199801/express-vercel#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "node-telegram-bot-api" : "^0.50.0"
   }
 }
