@@ -1,29 +1,40 @@
-const TelegramBot = require('node-telegram-bot-api');
 
-// replace the value below with the Telegram token you receive from @BotFather
-const token = '7908620487:AAF4g43C8WDQ_MPr2Eo9Dg2XYusyQbvMS6U';
+const express = require("express");
+const TelegramBot = require("node-telegram-bot-api");
 
-// Create a bot that uses 'polling' to fetch new updates
-const bot = new TelegramBot(token, {polling: true});
+const app = express();
+const port = process.env.PORT || 3000;
+const bot = new TelegramBot("7908620487:AAF4g43C8WDQ_MPr2Eo9Dg2XYusyQbvMS6U", { polling: true });
 
-// Matches "/echo [whatever]"
-bot.onText(/\/echo (.+)/, (msg, match) => {
-  // 'msg' is the received Message from Telegram
-  // 'match' is the result of executing the regexp above on the text content
-  // of the message
+app.use(express.json());
 
-  const chatId = msg.chat.id;
-  const resp = match[1]; // the captured "whatever"
-
-  // send back the matched "whatever" to the chat
-  bot.sendMessage(chatId, resp);
+// Event saat bot menerima pesan
+bot.on("message", (msg) => {
+    const chatId = msg.chat.id;
+    bot.sendMessage(chatId, `Halo, ${msg.from.first_name}! Anda mengirim: ${msg.text}`);
 });
 
-// Listen for any kind of message. There are different kinds of
-// messages.
-bot.on('message', (msg) => {
-  const chatId = msg.chat.id;
+// Endpoint untuk mengirim pesan ke chat tertentu
+app.post("/send-message", async (req, res) => {
+    const { chatId, text } = req.body;
+    if (!chatId || !text) {
+        return res.status(400).json({ error: "chatId dan text diperlukan" });
+    }
 
-  // send a message to the chat acknowledging receipt of their message
-  bot.sendMessage(chatId, 'Received your message');
+    try {
+        await bot.sendMessage(chatId, text);
+        res.json({ success: true, message: "Pesan berhasil dikirim" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Endpoint root
+app.get("/", (req, res) => {
+    res.send("Bot Telegram dengan Express berjalan!");
+});
+
+// Jalankan server Express
+app.listen(port, () => {
+    console.log(`Server berjalan di http://localhost:${port}`);
 });
